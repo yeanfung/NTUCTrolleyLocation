@@ -2,63 +2,35 @@
 library(ggmap)
 library(ggplot2)
 library(shiny)
+library(ggiraph)
 
 #getting data file
-setwd("D:/R/Working Directory/shiny")
-list.files()
-Data1 <- read.csv(file = "NTUC_Trolley_Location.csv", header = TRUE, sep = ",")
-
-#BMIframe <- as.data.frame(BMI)
-
-#BMIframe$alpha <- ifelse (BMIframe$BMI >= 10 & BMIframe$BMI < 30, 0.5, 1)
+Data1 <- read.csv(file = "https://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
 
 #shiny server for display map
-shinyServer(function(input, output) {
-  
+shinyServer(function(input, output, session) {
   
   output$NTUCmap <- renderPlot({
     #get map from google
-    zoomvalue <- reactive(input$Zoomvalue)
 
-    if(is.null(zoomvalue())) 
-       {
-      zoommap = 18
-    }
-       else
-       {
-         zoommap = zoomvalue()
-       }
-    #print(input$Zoomvalue)
+    dotsize <- c(1,2,3,4,5,6,7) 
     
-    sing <- get_map(location = c(lon = 103.704933, lat = 1.339686), color = "color", zoom = 17, maptype = "hybrid", source = "google")
-    
-    #BMIframe$value1 <- ifelse(BMIframe$BMI >= BMIvalue(), 1, 0)
-                    
-    #value <- sum(BMIframe$value1)
-    
-    #BMIframe$value2 <- ifelse(BMIframe$value1 == 1, BMIframe$BMI, 0)
-    
-    #dummy lat long                          
-    #lat1 <- runif(value,1.307301,1.307599)
-    #lat2 <- runif(value,1.307501,1.307999)
-    
-    #long1 <- runif(value,103.780301,103.780599)
-    #long2 <- runif(value,103.779601,103.779899) 
-    
-    #BMIframe$lat <- ifelse (BMIframe$value2 >= 10 & BMIframe$value2 < 30, lat1, lat2)
-    #lat <- BMIframe$lat
-    #BMIframe$long <- ifelse (BMIframe$value2 >= 10 & BMIframe$value2 < 30, long1, long2)
-    #long <- BMIframe$long
-    #fix map border
-    lao <- data.frame (Data1$Trolley_Latitude,Data1$Trolley_Longitude)
-  
-    s <- ggmap(sing) + geom_point(
-      data = lao, 
-      aes_string(x = "Data1$Trolley_Longitude", y = "Data1$Trolley_Latitude"),
-      colour ="red", 
-      size = 6,
+    sing <- get_map(location = c(lon = 103.704933, lat = 1.339686), color = "color", zoom = input$zoom, maptype = "hybrid", source = "google")
+
+      s <- ggmap(sing) + geom_point(
+      data = Data1, 
+      aes(x = Longtitude, y = Latitude, tooltip = as.character(Sensor.ID)),
+      colour = "red",
+      size = dotsize[input$zoom-11],
       alpha = 1.0
     )
+    
+    #ggiraph(code = {print(s)}, zoom_max = 5,
+    #        tooltip_offx = 20, tooltip_offy = -10, 
+    #        hover_css = "fill:black;",
+    #        tooltip_opacity = 0.7)
+    
     print(s)
   })
+  
 })
