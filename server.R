@@ -2,7 +2,7 @@
 library(ggmap)
 library(ggplot2)
 library(shiny)
-library(ggiraph)
+#library(ggiraph)
 
 #getting data file
 Data1 <- read.csv(file = "https://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
