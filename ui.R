@@ -1,5 +1,5 @@
-library(ggmap)
-library(ggplot2)
+#library(ggmap)
+#library(ggplot2)
 library(shiny)
 
 shinyUI(fluidPage(
