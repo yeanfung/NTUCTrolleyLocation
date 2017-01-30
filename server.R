@@ -20,7 +20,7 @@ shinyServer(function(input, output, session) {
     #trolleyColor <- c("blue","red")
     #names(trolleyColor) <- c("H","M")
 
-    sing <- get_map(location = c(lon = 103.704933, lat = 1.339686), color = "color", zoom = input$zoom, maptype = "hybrid", source = "google")
+    sing <- get_map(location = c(lon = input$panX, lat = input$panY), color = "color", zoom = input$zoom, maptype = "hybrid", source = "google")
 
       s <- ggmap(sing) + geom_point(
       data = Data1, 
