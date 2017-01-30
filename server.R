@@ -5,7 +5,7 @@ library(shiny)
 #library(ggiraph)
 
 #getting data file
-Data1 <- read.csv(file = "https://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
+trolley1 <- read.csv(file = "https://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
 
 #shiny server for display map
 shinyServer(function(input, output, session) {
@@ -15,12 +15,17 @@ shinyServer(function(input, output, session) {
 
     dotsize <- c(1,2,3,4,5,6,7) 
     
+    Data1 <- trolley1[trolley1$HR == input$hour,]
+      
+    #trolleyColor <- c("blue","red")
+    #names(trolleyColor) <- c("H","M")
+
     sing <- get_map(location = c(lon = 103.704933, lat = 1.339686), color = "color", zoom = input$zoom, maptype = "hybrid", source = "google")
 
       s <- ggmap(sing) + geom_point(
       data = Data1, 
-      aes(x = Longtitude, y = Latitude, tooltip = as.character(Sensor.ID)),
-      colour = "red",
+      aes(x = Longtitude, y = Latitude,colour = Location),
+      #colour = trolleyColor[Data1$Msg],
       size = dotsize[input$zoom-11],
       alpha = 1.0
     )

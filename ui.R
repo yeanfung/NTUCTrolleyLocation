@@ -9,8 +9,10 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       helpText(h4("Trolley Location")),
-      sliderInput("zoom", label = "Zoom Level",
-                  min = 12, max = 18, value = 15, step = 1)
+      sliderInput("zoom", label = "Zoom",
+                  min = 12, max = 18, value = 15, step = 1),
+      sliderInput("hour", label = "Hour",
+                  min = 0, max = 23, value = 23, step = 1)
       ),
     mainPanel(
       plotOutput("NTUCmap")
