@@ -4,7 +4,7 @@ library(ggplot2)
 library(shiny)
 
 #getting data file
-trolley1 <- read.csv(file = "http://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
+trolley1 <- read.csv(file = "http://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds_2.csv", header = TRUE, sep = ",")
 
 #shiny server for display map
 shinyServer(function(input, output, session) {
@@ -14,7 +14,7 @@ shinyServer(function(input, output, session) {
 
     dotsize <- c(4,5,6,7,8,9,10) 
     
-    Data1 <- trolley1[trolley1$HR == input$hour,]
+    Data1 <- trolley1[as.numeric(substring(trolley1$Time,12,13)) == input$hour,]
     Data1Summary <- data.frame(table(Data1$Latitude,Data1$Longtitude,Data1$Location))
     Data1Summary <- Data1Summary[Data1Summary$Freq > 0,]
     names(Data1Summary) <- c("Latitude","Longtitude","Location","TotalNo")
