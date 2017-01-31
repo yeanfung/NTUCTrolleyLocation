@@ -4,7 +4,7 @@ library(shiny)
 
 shinyUI(fluidPage(
   
-  titlePanel("NTUC Fairprice Extra Jurong Point with trolley location"),
+  titlePanel("NTUC Fairprice Extra Jurong Point Trolley Location"),
 
   sidebarLayout(
     sidebarPanel(

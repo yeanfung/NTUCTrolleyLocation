@@ -5,7 +5,7 @@ library(shiny)
 #library(ggiraph)
 
 #getting data file
-trolley1 <- read.csv(file = "https://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
+trolley1 <- read.csv(file = "http://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
 
 #shiny server for display map
 shinyServer(function(input, output, session) {
@@ -16,20 +16,27 @@ shinyServer(function(input, output, session) {
     dotsize <- c(1,2,3,4,5,6,7) 
     
     Data1 <- trolley1[trolley1$HR == input$hour,]
-      
+    Data1Summary <- data.frame(table(Data1$Latitude,Data1$Longtitude,Data1$Location))
+    Data1Summary <- Data1Summary[Data1Summary$Freq > 0,]
+    names(Data1Summary) <- c("Latitude","Longtitude","Location","TotalNo")
+    Data1Summary$Latitude <- as.numeric(as.character.factor(Data1Summary$Latitude))
+    Data1Summary$Longtitude <- as.numeric(as.character.factor(Data1Summary$Longtitude))
+    #Data1Summary[,3] <- as.character(Data1Summary[,3])
+
     #trolleyColor <- c("blue","red")
     #names(trolleyColor) <- c("H","M")
 
+    Data1Summary$TotalNo <- as.factor(Data1Summary$TotalNo)
+    
     sing <- get_map(location = c(lon = input$panX, lat = input$panY), color = "color", zoom = input$zoom, maptype = "hybrid", source = "google")
 
       s <- ggmap(sing) + geom_point(
-      data = Data1, 
-      aes(x = Longtitude, y = Latitude,colour = Location),
-      #colour = trolleyColor[Data1$Msg],
+      data = Data1Summary, 
+      aes(x = Longtitude, y = Latitude,colour = Location, shape=TotalNo),
       size = dotsize[input$zoom-11],
-      alpha = 1.0
+      alpha = 0.8
     )
-    
+
     #ggiraph(code = {print(s)}, zoom_max = 5,
     #        tooltip_offx = 20, tooltip_offy = -10, 
     #        hover_css = "fill:black;",
