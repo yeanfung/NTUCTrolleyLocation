@@ -18,7 +18,7 @@ shinyUI(fluidPage(
                   min = 0, max = 23, value = 23, step = 1)
       ),
     mainPanel(
-      plotOutput("NTUCmap")
+      plotOutput("NTUCmap", width="700px",height="700px")
     )
   )
 ))
