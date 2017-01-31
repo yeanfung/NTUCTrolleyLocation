@@ -2,7 +2,6 @@
 library(ggmap)
 library(ggplot2)
 library(shiny)
-#library(ggiraph)
 
 #getting data file
 trolley1 <- read.csv(file = "http://s3-ap-southeast-1.amazonaws.com/trolleyproject/trolleyrawfeeds.csv", header = TRUE, sep = ",")
@@ -21,11 +20,6 @@ shinyServer(function(input, output, session) {
     names(Data1Summary) <- c("Latitude","Longtitude","Location","TotalNo")
     Data1Summary$Latitude <- as.numeric(as.character.factor(Data1Summary$Latitude))
     Data1Summary$Longtitude <- as.numeric(as.character.factor(Data1Summary$Longtitude))
-    #Data1Summary[,3] <- as.character(Data1Summary[,3])
-
-    #trolleyColor <- c("blue","red")
-    #names(trolleyColor) <- c("H","M")
-
     Data1Summary$TotalNo <- as.factor(Data1Summary$TotalNo)
     
     sing <- get_map(location = c(lon = input$panX, lat = input$panY), color = "color", zoom = input$zoom, maptype = "hybrid", source = "google")
@@ -37,11 +31,6 @@ shinyServer(function(input, output, session) {
       alpha = 0.8
     )
 
-    #ggiraph(code = {print(s)}, zoom_max = 5,
-    #        tooltip_offx = 20, tooltip_offy = -10, 
-    #        hover_css = "fill:black;",
-    #        tooltip_opacity = 0.7)
-    
     print(s)
   })
   
