@@ -4,7 +4,7 @@ library(shiny)
 
 shinyUI(fluidPage(
   
-  titlePanel("NTUC Fairprice Extra Jurong Point Trolley Location"),
+  titlePanel("NTUC Fairprice Extra Jurong Point (lat:1.3406207, long:103.7056403) Trolley Location"),
 
   sidebarLayout(
     sidebarPanel(
@@ -15,7 +15,7 @@ shinyUI(fluidPage(
       sliderInput("panY", label = "Y",
                   min = 1.32, max = 1.36, value = 1.339686, step = 0.000001),
       sliderInput("hour", label = "Hour",
-                  min = 0, max = 23, value = 23, step = 1)
+                  min = 0, max = 23, value = 6, step = 1)
       ),
     mainPanel(
       plotOutput("NTUCmap", width="700px",height="700px")
