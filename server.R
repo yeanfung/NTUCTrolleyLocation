@@ -14,7 +14,7 @@ shinyServer(function(input, output, session) {
 
     dotsize <- c(4,5,6,7,8,9,10) 
     
-    Data1 <- trolley1[as.numeric(substring(trolley1$Time,12,13)) == input$hour,]
+    Data1 <- trolley1[as.numeric(format(strptime(trolley1$Time, format="%d/%m/%Y %H:%M"),"%H")) == input$hour,]
     Data1Summary <- data.frame(table(Data1$Latitude,Data1$Longtitude,Data1$Location))
     Data1Summary <- Data1Summary[Data1Summary$Freq > 0,]
     names(Data1Summary) <- c("Latitude","Longtitude","Location","TotalNo")
